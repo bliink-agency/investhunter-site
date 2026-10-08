@@ -5,8 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hunter Investisseur | Holding de Raphaël Da Silva Santos</title>
 <meta name="description" content="Hunter Investisseur, holding de Raphaël Da Silva Santos&nbsp;: services numériques avec Bliink, loisirs avec Le Studio à Amiens, patrimoine immobilier et projets en préparation.">
-<meta name="theme-color" content="#3E070C">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#F3EEE6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121010" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
 <link rel="canonical" href="https://investhunter.fr/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
@@ -17,9 +18,13 @@
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preload" href="assets/fonts/cormorant-garamond-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/manrope-600.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/manrope-400.woff2" as="font" type="font/woff2" crossorigin>
-<script>document.documentElement.classList.replace('no-js', 'js');</script>
+<script>
+document.documentElement.classList.replace('no-js', 'js');
+// Thème choisi par le visiteur (sinon : réglage du système)
+try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
 <style>
 /* ---------- Polices (auto-hébergées, aucune requête tierce) ---------- */
 @font-face { font-family: "Cormorant Garamond"; font-weight: 500; font-style: normal; font-display: swap; src: url(assets/fonts/cormorant-garamond-500.woff2) format("woff2"); }
@@ -38,11 +43,18 @@
   --red-800: #6E0E16;
   --red-600: #A8202E;
   --ink: #0F0C0C;
+  --rim: #E9E4DC;
+
+  /* Thème sombre (par défaut) : --paper = couleur du texte */
+  --bg: #121010;
   --paper: #F2ECE2;
   --paper-2: rgba(242, 236, 226, .72);
   --paper-3: rgba(242, 236, 226, .45);
-  --line: rgba(242, 236, 226, .18);
-  --rim: #E9E4DC;
+  --line: rgba(242, 236, 226, .16);
+  --accent: #E0343F;
+  --shadow-c: rgba(0, 0, 0, .75);
+  --grain-o: .05;
+  color-scheme: dark;
 
   --serif: "Cormorant Garamond", "Cormorant", Garamond, Georgia, serif;
   --sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -62,14 +74,28 @@
 @supports (height: 1svh) {
   :root { --ch: min(72svh, 620px); }
 }
+/* Thème clair : choisi, ou réglage du système si aucun choix */
+:root[data-theme="light"] {
+  --bg: #F3EEE6; --paper: #171212; --paper-2: rgba(23, 18, 18, .74); --paper-3: rgba(23, 18, 18, .55);
+  --line: rgba(23, 18, 18, .14); --accent: #A8202E; --shadow-c: rgba(60, 20, 20, .38); --grain-o: .06;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F3EEE6; --paper: #171212; --paper-2: rgba(23, 18, 18, .74); --paper-3: rgba(23, 18, 18, .55);
+    --line: rgba(23, 18, 18, .14); --accent: #A8202E; --shadow-c: rgba(60, 20, 20, .38); --grain-o: .06;
+    color-scheme: light;
+  }
+}
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
   margin: 0;
-  background: var(--red-900);
+  background: var(--bg);
   color: var(--paper);
   font: 400 1rem/1.65 var(--sans);
+  transition: background-color .4s, color .4s;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -77,15 +103,15 @@ img { display: block; max-width: 100%; }
 a { color: inherit; }
 h1, h2, h3, p { margin: 0; }
 
-/* Fond : velours rouge, vignettage, grain */
+/* Fond : aplat et grain très léger */
 .backdrop {
   position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background:
-    radial-gradient(120% 80% at 50% 35%, #7A1019 0%, var(--red-800) 30%, var(--red-900) 62%, var(--red-950) 100%);
+  background: var(--bg);
+  transition: background-color .4s;
 }
 .backdrop::after {
   content: ""; position: absolute; inset: 0;
-  background-image: var(--grain); opacity: .22; mix-blend-mode: multiply;
+  background-image: var(--grain); opacity: var(--grain-o); mix-blend-mode: multiply;
 }
 
 /* Focus clavier visible partout */
@@ -98,10 +124,10 @@ h1, h2, h3, p { margin: 0; }
 
 .skip {
   position: absolute; left: 16px; top: -100px; z-index: 100;
-  background: var(--paper); color: var(--ink);
+  background: var(--paper); color: var(--bg);
   padding: 10px 16px; font: 500 .875rem var(--sans); text-decoration: none;
 }
-.skip:focus-visible { top: 16px; outline-color: var(--ink); }
+.skip:focus-visible { top: 16px; outline-color: var(--accent); }
 
 .visually-hidden {
   position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -111,7 +137,7 @@ h1, h2, h3, p { margin: 0; }
 .eyebrow {
   font: 500 .72rem/1.2 var(--mono);
   letter-spacing: .22em; text-transform: uppercase;
-  color: var(--paper-3);
+  color: var(--accent);
 }
 
 /* ---------- En-tête ---------- */
@@ -120,12 +146,23 @@ h1, h2, h3, p { margin: 0; }
   height: var(--header-h);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 var(--gutter);
-  background: linear-gradient(to bottom, rgba(36, 4, 10, .75), rgba(36, 4, 10, 0));
+  background: linear-gradient(to bottom, var(--bg) 20%, transparent);
 }
 .brand {
-  font: 600 1.35rem/1 var(--serif); letter-spacing: .02em; text-decoration: none;
+  font: 600 1.05rem/1 var(--sans); letter-spacing: -.01em; text-decoration: none;
 }
-.brand em { font-style: italic; font-weight: 500; color: var(--paper-2); }
+.brand em { font-style: normal; font-weight: 400; color: var(--paper-2); }
+.header-right { display: flex; align-items: center; gap: clamp(16px, 3vw, 32px); }
+/* Sélecteur de thème */
+.theme-switch { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+.theme-switch button {
+  appearance: none; border: 0; background: transparent; color: var(--paper-3); cursor: pointer;
+  font: 500 .66rem/1 var(--mono); letter-spacing: .16em; text-transform: uppercase;
+  padding: 7px 11px; border-radius: 999px;
+  transition: background-color .3s, color .3s;
+}
+.theme-switch button:hover { color: var(--paper); }
+.theme-switch button[aria-pressed="true"] { background: var(--paper); color: var(--bg); }
 .header-link {
   font: 500 .72rem/1 var(--mono); letter-spacing: .22em; text-transform: uppercase;
   text-decoration: none; padding: 10px 0; border-bottom: 1px solid var(--line);
@@ -168,7 +205,7 @@ h1, h2, h3, p { margin: 0; }
 .index .num { grid-column: 1; grid-row: 1; transition: opacity .3s; }
 .index .lbl { grid-column: 2; }
 .index a:hover { color: var(--paper-2); }
-.index a[aria-current="true"] { color: var(--paper); }
+.index a[aria-current="true"] { color: var(--accent); }
 .index a[aria-current="true"]::before { opacity: 1; transform: scaleX(1); }
 .index a[aria-current="true"] .num { opacity: 0; }
 
@@ -180,7 +217,7 @@ h1, h2, h3, p { margin: 0; }
 }
 .card-shadow {
   position: absolute; left: 8%; right: 8%; bottom: calc(var(--u) * -10); height: calc(var(--u) * 12);
-  background: radial-gradient(closest-side, rgba(10, 0, 2, .7), rgba(10, 0, 2, 0));
+  background: radial-gradient(closest-side, var(--shadow-c), transparent);
   filter: blur(6px);
   transform: scaleX(var(--shadow, 1));
 }
@@ -415,26 +452,12 @@ h1, h2, h3, p { margin: 0; }
   border: calc(var(--u) * .7) solid rgba(242, 236, 226, .85); border-radius: calc(var(--u) * .9);
 }
 .digits .gap { height: calc(var(--u) * 2.6); border: 0; }
-.codename {
-  position: absolute; left: 39%; top: 50%;
-  transform: translate(-50%, -50%) rotate(-90deg);
-  text-align: center; white-space: nowrap;
+.projects {
+  position: absolute; left: 20%; right: 35%; top: 50%; transform: translateY(-50%);
+  display: grid; gap: calc(var(--u) * 9);
 }
-.codename span { display: block; font: 500 calc(var(--u) * 2)/1 var(--mono); letter-spacing: .4em; text-transform: uppercase; opacity: .7; }
-.codename strong { display: block; margin-top: calc(var(--u) * 1.6); font: 600 calc(var(--u) * 15)/.9 var(--serif); letter-spacing: .1em; }
-.redact {
-  position: absolute; left: 18%; width: 40%; height: calc(var(--u) * 2.6); background: #120808; border-radius: 1px;
-}
-.stamp {
-  position: absolute; left: 50%; bottom: 13%;
-  transform: translateX(-62%) rotate(-14deg);
-  padding: calc(var(--u) * 1.4) calc(var(--u) * 2.6);
-  border: calc(var(--u) * .55) solid rgba(242, 236, 226, .85);
-  outline: calc(var(--u) * .25) solid rgba(242, 236, 226, .85); outline-offset: calc(var(--u) * .7);
-  font: 500 calc(var(--u) * 2.9)/1 var(--mono); letter-spacing: .3em; text-transform: uppercase;
-  color: rgba(242, 236, 226, .9);
-  background: rgba(62, 7, 12, .55);
-}
+.projects span { display: block; font: 500 calc(var(--u) * 1.8)/1 var(--mono); letter-spacing: .35em; text-transform: uppercase; opacity: .7; }
+.projects strong { display: block; margin-top: calc(var(--u) * 2); font: 600 calc(var(--u) * 8.6)/.9 var(--serif); letter-spacing: .06em; text-transform: uppercase; }
 .back-label {
   position: absolute; left: calc(var(--u) * 6); top: calc(var(--u) * 4.4);
   font: 500 calc(var(--u) * 1.7)/1 var(--mono); letter-spacing: .3em; text-transform: uppercase; opacity: .65;
@@ -455,14 +478,14 @@ h1, h2, h3, p { margin: 0; }
 }
 .no-js .text + .text { margin-top: 72px; }
 .text h1, .text h2 {
-  margin-top: 18px;
-  font: 500 clamp(2.6rem, 5.4vw, 4.75rem)/1 var(--serif);
-  letter-spacing: -.005em;
+  margin-top: 16px;
+  font: 600 clamp(2.1rem, 3.6vw, 3.1rem)/1.05 var(--sans);
+  letter-spacing: -.025em;
 }
-.text h1 em, .text h2 em { font-style: italic; color: var(--paper-2); }
+.text h1 em, .text h2 em { font-style: normal; color: var(--accent); }
 .text p.lead {
   margin-top: 22px;
-  font-size: clamp(1rem, 1.25vw, 1.125rem); line-height: 1.7; color: var(--paper-2);
+  font-size: 1.05rem; line-height: 1.7; color: var(--paper-2);
 }
 .meta {
   margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line);
@@ -477,7 +500,7 @@ h1, h2, h3, p { margin: 0; }
 }
 .link:hover { border-color: var(--paper); }
 .soon { color: var(--paper-2); }
-.soon::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 10px; border-radius: 50%; background: var(--red-600); box-shadow: 0 0 0 3px rgba(168, 32, 46, .3); vertical-align: 1px; }
+.soon::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(168, 32, 46, .25); vertical-align: 1px; }
 
 .scroll-hint {
   position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
@@ -496,19 +519,22 @@ h1, h2, h3, p { margin: 0; }
   position: relative;
   padding: clamp(96px, 16vw, 200px) var(--gutter);
   text-align: center;
-  border-top: 1px solid var(--line);
+  background: #A31D29;
+  --paper: #FFF7F0; --paper-2: rgba(255, 247, 240, .82); --paper-3: rgba(255, 247, 240, .6); --line: rgba(255, 247, 240, .3); --accent: #FFF7F0;
+  color: var(--paper);
 }
-.contact h2 { margin-top: 26px; font: 500 clamp(2.8rem, 8vw, 6.5rem)/1 var(--serif); letter-spacing: -.01em; }
+.contact h2 { margin-top: 22px; font: 600 clamp(2.4rem, 6vw, 4.6rem)/1 var(--sans); letter-spacing: -.03em; }
 .contact h2 a { text-decoration: none; display: inline-block; }
-.contact h2 a span[aria-hidden] { display: inline-block; font-style: italic; transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+.contact h2 a span[aria-hidden] { display: inline-block; transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
 .contact h2 a:hover span[aria-hidden] { transform: translateX(.18em); }
-.contact h2 a em { font-style: italic; color: var(--paper-2); }
+.contact h2 a em { font-style: normal; }
 .contact-mail { margin-top: 28px; font: 500 .8rem/1.4 var(--mono); letter-spacing: .14em; color: var(--paper-2); }
 .contact-mail a { text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 3px; }
 .contact-mail a:hover { border-color: var(--paper); }
 
 /* ---------- Pied de page ---------- */
 .site-footer {
+  --paper: #F2ECE2; --paper-2: rgba(242, 236, 226, .72); --paper-3: rgba(242, 236, 226, .45); --accent: rgba(242, 236, 226, .45);
   background: var(--ink); color: var(--paper-2);
   padding: clamp(56px, 8vw, 96px) var(--gutter) 40px;
   font-size: .875rem; line-height: 1.7;
@@ -517,8 +543,10 @@ h1, h2, h3, p { margin: 0; }
   max-width: 1320px; margin: 0 auto;
   display: grid; grid-template-columns: 1fr 1.4fr 1.4fr; gap: 48px;
 }
-.footer-brand { font: 600 1.6rem/1.1 var(--serif); color: var(--paper); }
-.footer-brand em { font-weight: 500; color: var(--paper-2); }
+.footer-brand { font: 600 1.25rem/1.1 var(--sans); letter-spacing: -.01em; color: var(--paper); }
+.footer-brand em { font-style: normal; font-weight: 400; color: var(--paper-2); }
+.footer-credit { color: var(--paper); text-decoration: none !important; border-bottom: 1px solid var(--paper-3); padding-bottom: 2px; }
+.footer-credit:hover { border-color: var(--paper); }
 .site-footer h2 { margin-bottom: 16px; }
 .site-footer p + p { margin-top: 8px; }
 .site-footer a { text-decoration: underline; text-decoration-color: var(--paper-3); text-underline-offset: 3px; }
@@ -565,7 +593,9 @@ h1, h2, h3, p { margin: 0; }
   .meta { margin-top: 14px; padding-top: 12px; justify-content: center; gap: 8px 20px; }
   .index ol { gap: 14px; }
   .scroll-hint { display: none; }
-  .brand { font-size: 1.15rem; }
+  .brand { font-size: .95rem; }
+  .brand em { display: none; }
+  .header-link { display: none; }
   .footer-grid { grid-template-columns: 1fr; gap: 36px; }
   .footer-grid > :first-child { grid-column: auto; }
 }
@@ -595,7 +625,13 @@ h1, h2, h3, p { margin: 0; }
 
 <header class="site-header">
   <a class="brand" href="#top">Hunter <em>Investisseur</em></a>
-  <a class="header-link" href="#contact">Contact</a>
+  <div class="header-right">
+    <div class="theme-switch" role="group" aria-label="Thème d’affichage">
+      <button type="button" data-theme-set="light" aria-pressed="false">Clair</button>
+      <button type="button" data-theme-set="dark" aria-pressed="false">Sombre</button>
+    </div>
+    <a class="header-link" href="#contact">Contact</a>
+  </div>
 </header>
 
 <main id="top">
@@ -713,23 +749,23 @@ h1, h2, h3, p { margin: 0; }
             <div class="grain"></div><div class="sheen"></div>
           </div>
 
-          <!-- Face 5 : Projets en préparation (verso de licence) -->
+          <!-- Face 5 : Projets en cours (verso de licence) -->
           <div class="face face--projets" data-i="4" style="--i: 4">
-            <div class="micro micro--t" data-micro="Accès restreint · Hunter Investisseur"></div>
+            <div class="micro micro--t" data-micro="Projets en cours · Hunter Investisseur"></div>
             <div class="panel panel--back">
-              <span class="back-label">En préparation</span>
+              <span class="back-label">Projets en cours</span>
               <div class="digits">
                 <i></i><i></i><i></i><i></i><i class="gap"></i>
                 <i></i><i></i><i></i><i class="gap"></i>
                 <i></i><i></i><i></i><i></i>
               </div>
-              <span class="redact" style="top: 12%"></span>
-              <span class="redact" style="top: 16.5%; width: 28%"></span>
-              <div class="codename"><span>Nom de code</span><strong>Projet</strong></div>
-              <div class="stamp">Confidentiel</div>
+              <div class="projects">
+                <p><span>Projet 01</span><strong>Projet</strong></p>
+                <p><span>Projet 02</span><strong>Projet</strong></p>
+              </div>
               <div class="stripe"></div>
             </div>
-            <div class="micro micro--b" data-micro="Confidentiel · Projet en conception"></div>
+            <div class="micro micro--b" data-micro="Projet · Projet"></div>
             <div class="grain"></div><div class="sheen"></div>
           </div>
         </div>
@@ -750,6 +786,7 @@ h1, h2, h3, p { margin: 0; }
           <p class="meta">
             <span>Détenue à <strong>100&nbsp;%</strong></span>
             <a class="link" href="https://bliinkagency.com" target="_blank" rel="noopener">bliinkagency.com <span aria-hidden="true">↗</span><span class="visually-hidden"> (nouvel onglet)</span></a>
+            <span>Ce site est une réalisation Bliink</span>
           </p>
         </article>
 
@@ -771,9 +808,9 @@ h1, h2, h3, p { margin: 0; }
 
         <article class="text" id="face-5" data-i="4" tabindex="-1">
           <p class="eyebrow">05 · En préparation</p>
-          <h2>Projets <em>en préparation</em></h2>
-          <p class="lead">Un concept de loisir immersif est en cours de conception. Nous en dirons davantage le moment venu.</p>
-          <p class="meta"><span>Bientôt dévoilés</span></p>
+          <h2>Projets <em>en cours</em></h2>
+          <p class="lead">Deux projets sont en cours de développement.</p>
+          <p class="meta"><strong>Projet</strong><strong>Projet</strong></p>
         </article>
       </div>
 
@@ -800,7 +837,7 @@ h1, h2, h3, p { margin: 0; }
       <p>Directeur de la publication&nbsp;: Raphaël Da Silva Santos.</p>
       <p>Hébergement&nbsp;: GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis.</p>
       <p>Site réalisé par <a href="https://bliinkagency.com" target="_blank" rel="noopener">Bliink</a>.</p>
-      <p>Aucun cookie&nbsp;: ce site ne dépose aucun cookie et n’utilise aucun outil de mesure d’audience.</p>
+      <p>Aucun cookie&nbsp;: ce site ne dépose aucun cookie et n’utilise aucun outil de mesure d’audience. Si vous choisissez le thème clair ou sombre, ce choix est simplement enregistré dans votre navigateur.</p>
     </section>
     <section aria-labelledby="credits-title">
       <h2 class="eyebrow" id="credits-title">Crédits</h2>
@@ -811,7 +848,7 @@ h1, h2, h3, p { margin: 0; }
   </div>
   <div class="footer-bottom">
     <span>© 2026 Hunter Investisseur</span>
-    <span>investhunter.fr</span>
+    <span>Site conçu par <a class="footer-credit" href="https://bliinkagency.com" target="_blank" rel="noopener">Bliink<span class="visually-hidden"> (nouvel onglet)</span></a></span>
   </div>
 </footer>
 
@@ -848,6 +885,28 @@ h1, h2, h3, p { margin: 0; }
     var t = el.getAttribute('data-micro') + ' · ';
     el.textContent = new Array(8).join(t);
   });
+
+  /* ---------- Thème clair / sombre ---------- */
+  var rootEl = document.documentElement;
+  var systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+  var themeButtons = Array.prototype.slice.call(document.querySelectorAll('[data-theme-set]'));
+  function currentTheme() {
+    return rootEl.getAttribute('data-theme') || (systemDark.matches ? 'dark' : 'light');
+  }
+  function syncThemeButtons() {
+    var t = currentTheme();
+    themeButtons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-set') === t)); });
+  }
+  themeButtons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = b.getAttribute('data-theme-set');
+      rootEl.setAttribute('data-theme', t);
+      try { localStorage.setItem('theme', t); } catch (e) {}
+      syncThemeButtons();
+    });
+  });
+  if (systemDark.addEventListener) systemDark.addEventListener('change', syncThemeButtons);
+  syncThemeButtons();
 
   /* ---------- Carte pilotée par le défilement ---------- */
   var journey = document.querySelector('.journey');
