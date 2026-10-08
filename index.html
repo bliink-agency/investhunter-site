@@ -172,7 +172,8 @@ h1, h2, h3, p { margin: 0; }
 
 /* ---------- Parcours de la carte ---------- */
 .journey { position: relative; }
-.js .journey { height: calc(var(--n) * 130vh); }
+/* 4 rotations de 120vh + sortie de 80vh vers le contact */
+.js .journey { height: calc(100vh + 480vh + 80vh); }
 .stage {
   display: grid;
   grid-template-columns: minmax(120px, 170px) minmax(0, 1fr) minmax(0, 1fr);
@@ -186,7 +187,7 @@ h1, h2, h3, p { margin: 0; }
 @supports (height: 1svh) {
   .stage { min-height: 100svh; }
   .js .stage { height: 100svh; min-height: 0; }
-  .js .journey { height: calc(var(--n) * 130svh); }
+  .js .journey { height: calc(100svh + 480svh + 80svh); }
 }
 
 /* Index cliquable */
@@ -336,6 +337,18 @@ h1, h2, h3, p { margin: 0; }
   mask: var(--guilloche) 0 0 / calc(var(--u) * 12) auto repeat;
   opacity: .1;
 }
+.sirens { position: relative; display: flex; flex-wrap: wrap; gap: 0 calc(var(--u) * 4); margin: calc(var(--u) * -1) 0 calc(var(--u) * 1.6); }
+.siren {
+  appearance: none; border: 0; background: transparent; color: inherit; cursor: copy;
+  display: inline-flex; align-items: baseline; gap: calc(var(--u) * 1.4);
+  padding: calc(var(--u) * .8) 0;
+  font: 500 calc(var(--u) * 2.4)/1 var(--mono); letter-spacing: .1em;
+}
+.siren-k { font-size: .8em; letter-spacing: .2em; opacity: .6; }
+.siren-v { border-bottom: 1px dotted transparent; transition: border-color .2s; }
+.siren:hover .siren-v { border-bottom-color: currentColor; }
+.siren:focus-visible { outline: calc(var(--u) * .35) solid currentColor; outline-offset: calc(var(--u) * .5); border-radius: 2px; }
+.siren.is-copied .siren-k { opacity: 1; }
 .namebox {
   position: relative;
   border: calc(var(--u) * .45) solid currentColor;
@@ -385,6 +398,7 @@ h1, h2, h3, p { margin: 0; }
 }
 
 /* ---- Face 1 : Hunter Investisseur ---- */
+.face--hunter .bar span { font-size: calc(var(--u) * 3.6); letter-spacing: .1em; }
 .face--hunter {
   --f-top: #121010; --f-low-a: #F4EEE6; --f-low-b: #E6C6C1; --f-ink: #1E1414;
 }
@@ -426,7 +440,7 @@ h1, h2, h3, p { margin: 0; }
 .w-title { position: relative; z-index: 1; font: 600 calc(var(--u) * 8.4)/.95 var(--serif); letter-spacing: .02em; }
 .w-sub { position: relative; z-index: 1; font: italic 500 calc(var(--u) * 5.2)/1 var(--serif); }
 
-/* ---- Face 5 : Projet (verso de licence) ---- */
+/* ---- Face 5 : Projets en cours (verso de licence) ---- */
 .face--projets { --f-ink: #F2ECE2; }
 .panel--back {
   background: linear-gradient(160deg, #7A1019, #4A080E);
@@ -454,16 +468,18 @@ h1, h2, h3, p { margin: 0; }
 .digits .gap { height: calc(var(--u) * 2.6); border: 0; }
 .projects {
   position: absolute; left: 20%; right: 35%; top: 50%; transform: translateY(-50%);
-  display: grid; gap: calc(var(--u) * 9);
 }
-.projects span { display: block; font: 500 calc(var(--u) * 1.8)/1 var(--mono); letter-spacing: .35em; text-transform: uppercase; opacity: .7; }
-.projects strong { display: block; margin-top: calc(var(--u) * 2); font: 600 calc(var(--u) * 8.6)/.9 var(--serif); letter-spacing: .06em; text-transform: uppercase; }
+.projects span { display: block; font: 500 calc(var(--u) * 1.9)/1.4 var(--mono); letter-spacing: .35em; text-transform: uppercase; opacity: .75; }
+.projects strong { display: block; margin-top: calc(var(--u) * 2); font: 600 calc(var(--u) * 30)/.8 var(--serif); letter-spacing: -.02em; }
 .back-label {
   position: absolute; left: calc(var(--u) * 6); top: calc(var(--u) * 4.4);
   font: 500 calc(var(--u) * 1.7)/1 var(--mono); letter-spacing: .3em; text-transform: uppercase; opacity: .65;
 }
 
 /* ---------- Textes ---------- */
+.texts, .index, .scroll-hint { transition: opacity .4s ease, visibility 0s; }
+.is-outro .texts, .is-outro .index { opacity: 0; visibility: hidden; transition: opacity .4s ease, visibility 0s linear .4s; }
+.card-zone { transform-origin: 50% 50%; }
 .texts { position: relative; }
 .text { max-width: 30rem; }
 .js .text {
@@ -517,12 +533,20 @@ h1, h2, h3, p { margin: 0; }
 /* ---------- Contact ---------- */
 .contact {
   position: relative;
-  padding: clamp(96px, 16vw, 200px) var(--gutter);
+  padding: clamp(80px, 12vw, 160px) var(--gutter);
   text-align: center;
-  background: #A31D29;
-  --paper: #FFF7F0; --paper-2: rgba(255, 247, 240, .82); --paper-3: rgba(255, 247, 240, .6); --line: rgba(255, 247, 240, .3); --accent: #FFF7F0;
-  color: var(--paper);
 }
+/* La carte réduite se place au-dessus : le contact remonte sur la fin du parcours */
+.js .contact {
+  z-index: 2;
+  margin-top: -55vh; min-height: 55vh;
+  padding-top: 5vh; padding-bottom: 12vh;
+  scroll-margin-top: 45vh;
+}
+@supports (height: 1svh) {
+  .js .contact { margin-top: -55svh; min-height: 55svh; padding-top: 5svh; scroll-margin-top: 45svh; }
+}
+.contact h2 a span[aria-hidden] { color: var(--accent); }
 .contact h2 { margin-top: 22px; font: 600 clamp(2.4rem, 6vw, 4.6rem)/1 var(--sans); letter-spacing: -.03em; }
 .contact h2 a { text-decoration: none; display: inline-block; }
 .contact h2 a span[aria-hidden] { display: inline-block; transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
@@ -635,7 +659,7 @@ h1, h2, h3, p { margin: 0; }
 </header>
 
 <main id="top">
-  <section class="journey" id="activites" aria-label="La holding et ses activités" style="--n: 5">
+  <section class="journey" id="activites" aria-label="La holding et ses activités">
     <div class="stage">
 
       <nav class="index" aria-label="Index des faces de la carte">
@@ -648,7 +672,7 @@ h1, h2, h3, p { margin: 0; }
         </ol>
       </nav>
 
-      <div class="card-zone" aria-hidden="true">
+      <div class="card-zone">
         <div class="card-shadow"></div>
         <div class="card">
           <span class="slice" style="--z: -0.7"></span>
@@ -669,9 +693,10 @@ h1, h2, h3, p { margin: 0; }
                 <span class="chip">Membre</span>
                 <span class="vnum">HI · 0001</span>
                 <div class="window"><img src="assets/hunter-emblem.png" alt="" width="678" height="468"></div>
-                <div class="bar"><span>Hunter</span></div>
+                <div class="bar"><span>Hunter Investisseur</span></div>
               </div>
               <div class="low">
+                <div class="sirens"><button type="button" class="siren" data-copy="910536333" aria-label="Copier le SIREN 910 536 333"><span class="siren-k">SIREN</span><span class="siren-v">910&#8239;536&#8239;333</span></button></div>
                 <div class="namebox" data-glyph="HUNTER INVESTISSEUR"></div>
                 <div class="glyphs" data-glyph="RAPHAEL DA SILVA SANTOS|SERVICES NUMERIQUES|ET LOISIRS|CREPY EN VALOIS"></div>
                 <div class="seal"><span>HI</span></div>
@@ -693,8 +718,9 @@ h1, h2, h3, p { margin: 0; }
                 <div class="bar"><span>Bliink</span></div>
               </div>
               <div class="low">
+                <div class="sirens"><button type="button" class="siren" data-copy="987895158" aria-label="Copier le SIREN 987 895 158"><span class="siren-k">SIREN</span><span class="siren-v">987&#8239;895&#8239;158</span></button></div>
                 <div class="namebox" data-glyph="BLIINK AGENCY"></div>
-                <div class="glyphs" data-glyph="SITES ET APPLICATIONS|PETITES ENTREPRISES|LIVRES EN QUELQUES JOURS|DETENUE A CENT POUR CENT"></div>
+                <div class="glyphs" data-glyph="SITES ET APPLICATIONS|COMMUNICATION DIGITALE|PUBLICITE EN LIGNE|PETITES ENTREPRISES"></div>
                 <div class="seal"><span>B</span></div>
                 <span class="serial">N° 0002 · <span class="accent">Web</span></span>
               </div>
@@ -711,10 +737,11 @@ h1, h2, h3, p { margin: 0; }
                 <span class="chip">50&nbsp;%</span>
                 <span class="vnum">HI · 0003</span>
                 <div class="window"><img src="assets/le-studio.webp" alt="Le Studio" width="2000" height="1493"></div>
-                <div class="bar"><span>Amiens</span></div>
+                <div class="bar"><span>Le Studio</span></div>
               </div>
               <div class="low">
-                <div class="namebox" data-glyph="LE STUDIO AMIENS"></div>
+                <div class="sirens"><button type="button" class="siren" data-copy="933432221" aria-label="Copier le SIREN 933 432 221"><span class="siren-k">SIREN</span><span class="siren-v">933&#8239;432&#8239;221</span></button></div>
+                <div class="namebox" data-glyph="LE STUDIO"></div>
                 <div class="glyphs" data-glyph="QUIZ ROOM|KARAOKE|PAINT WALL|PARTICIPATION CINQUANTE"></div>
                 <div class="seal"><span>LS</span></div>
                 <span class="serial">N° 0003 · Loisirs</span>
@@ -729,20 +756,20 @@ h1, h2, h3, p { margin: 0; }
             <div class="micro micro--t" data-micro="Patrimoine immobilier · Hunter Investisseur"></div>
             <div class="panel">
               <div class="top">
-                <span class="chip">Actifs</span>
+                <span class="chip">Participations</span>
                 <span class="vnum">HI · 0004</span>
                 <div class="window window--type">
                   <span class="w-kicker">Participations</span>
-                  <span class="w-title">Patrimoine</span>
-                  <span class="w-sub">immobilier</span>
+                  <span class="w-title">Immobilier</span>
                 </div>
-                <div class="bar"><span>Pierre</span></div>
+                <div class="bar"><span>Patrimoine</span></div>
               </div>
               <div class="low">
+                <div class="sirens"><button type="button" class="siren" data-copy="910445857" aria-label="Copier le SIREN 910 445 857"><span class="siren-k">SIREN</span><span class="siren-v">910&#8239;445&#8239;857</span></button><button type="button" class="siren" data-copy="918818238" aria-label="Copier le SIREN 918 818 238"><span class="siren-k">SIREN</span><span class="siren-v">918&#8239;818&#8239;238</span></button></div>
                 <div class="namebox" data-glyph="PATRIMOINE IMMOBILIER"></div>
-                <div class="glyphs" data-glyph="PARTICIPATIONS|SOCIETES IMMOBILIERES|HUNTER INVESTISSEUR|LONG TERME"></div>
+                <div class="glyphs" data-glyph="PARTICIPATIONS|SOCIETES IMMOBILIERES|HUNTER INVESTISSEUR|PATRIMOINE"></div>
                 <div class="seal"><span>HI</span></div>
-                <span class="serial">N° 0004 · Pierre</span>
+                <span class="serial">N° 0004 · Immobilier</span>
               </div>
             </div>
             <div class="micro micro--b" data-micro="Participations · Sociétés immobilières"></div>
@@ -753,19 +780,40 @@ h1, h2, h3, p { margin: 0; }
           <div class="face face--projets" data-i="4" style="--i: 4">
             <div class="micro micro--t" data-micro="Projets en cours · Hunter Investisseur"></div>
             <div class="panel panel--back">
-              <span class="back-label">Projets en cours</span>
+              <span class="back-label">Hunter Investisseur</span>
               <div class="digits">
                 <i></i><i></i><i></i><i></i><i class="gap"></i>
                 <i></i><i></i><i></i><i class="gap"></i>
                 <i></i><i></i><i></i><i></i>
               </div>
               <div class="projects">
-                <p><span>Projet 01</span><strong>Projet</strong></p>
-                <p><span>Projet 02</span><strong>Projet</strong></p>
+                <p><span>Projets<br>en cours</span><strong>02</strong></p>
               </div>
               <div class="stripe"></div>
             </div>
-            <div class="micro micro--b" data-micro="Projet · Projet"></div>
+            <div class="micro micro--b" data-micro="Projets en cours · Hunter Investisseur"></div>
+            <div class="grain"></div><div class="sheen"></div>
+          </div>
+
+          <!-- Face finale : Hunter Investisseur, au-dessus du contact -->
+          <div class="face face--hunter" data-i="5" style="--i: 5">
+            <div class="micro micro--t" data-micro="Hunter Investisseur · Carte de membre"></div>
+            <div class="panel">
+              <div class="top">
+                <span class="chip">Membre</span>
+                <span class="vnum">HI · 0001</span>
+                <div class="window"><img src="assets/hunter-emblem.png" alt="" width="678" height="468"></div>
+                <div class="bar"><span>Hunter Investisseur</span></div>
+              </div>
+              <div class="low">
+                <div class="sirens"><button type="button" class="siren" data-copy="910536333" aria-label="Copier le SIREN 910 536 333"><span class="siren-k">SIREN</span><span class="siren-v">910&#8239;536&#8239;333</span></button></div>
+                <div class="namebox" data-glyph="HUNTER INVESTISSEUR"></div>
+                <div class="glyphs" data-glyph="RAPHAEL DA SILVA SANTOS|SERVICES NUMERIQUES|ET LOISIRS|CREPY EN VALOIS"></div>
+                <div class="seal"><span>HI</span></div>
+                <span class="serial">N° 0001 · 2026</span>
+              </div>
+            </div>
+            <div class="micro micro--b" data-micro="Holding · Services numériques · Loisirs"></div>
             <div class="grain"></div><div class="sheen"></div>
           </div>
         </div>
@@ -782,7 +830,7 @@ h1, h2, h3, p { margin: 0; }
         <article class="text" id="face-2" data-i="1" tabindex="-1">
           <p class="eyebrow">02 · Services numériques</p>
           <h2>Bliink</h2>
-          <p class="lead">Agence web&nbsp;: sites et applications pour les petites entreprises, livrés en quelques jours.</p>
+          <p class="lead">Agence web des petites entreprises&nbsp;: sites et applications livrés en quelques jours, communication digitale et publicité en ligne.</p>
           <p class="meta">
             <span>Détenue à <strong>100&nbsp;%</strong></span>
             <a class="link" href="https://bliinkagency.com" target="_blank" rel="noopener">bliinkagency.com <span aria-hidden="true">↗</span><span class="visually-hidden"> (nouvel onglet)</span></a>
@@ -810,11 +858,11 @@ h1, h2, h3, p { margin: 0; }
           <p class="eyebrow">05 · En préparation</p>
           <h2>Projets <em>en cours</em></h2>
           <p class="lead">Deux projets sont en cours de développement.</p>
-          <p class="meta"><strong>Projet</strong><strong>Projet</strong></p>
         </article>
       </div>
 
       <p class="scroll-hint" aria-hidden="true">Faire défiler</p>
+      <p class="visually-hidden" role="status" id="copy-status"></p>
     </div>
   </section>
 
@@ -832,7 +880,7 @@ h1, h2, h3, p { margin: 0; }
     </div>
     <section id="mentions" aria-labelledby="mentions-title">
       <h2 class="eyebrow" id="mentions-title">Mentions légales</h2>
-      <p>Hunter Investisseur, SASU au capital de [CAPITAL]&nbsp;€, immatriculée au RCS de [VILLE] sous le numéro [SIREN].</p>
+      <p>Hunter Investisseur, SASU au capital de [CAPITAL]&nbsp;€, immatriculée au RCS de [VILLE] sous le numéro 910&nbsp;536&nbsp;333.</p>
       <p>Siège social&nbsp;: 14 rue Jean Racine, 60800 Crépy-en-Valois.</p>
       <p>Directeur de la publication&nbsp;: Raphaël Da Silva Santos.</p>
       <p>Hébergement&nbsp;: GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis.</p>
@@ -916,7 +964,9 @@ h1, h2, h3, p { margin: 0; }
   var texts = Array.prototype.slice.call(document.querySelectorAll('.text'));
   var links = Array.prototype.slice.call(document.querySelectorAll('.index a'));
   var hint = document.querySelector('.scroll-hint');
-  var N = faces.length;
+  var stage = document.querySelector('.stage');
+  var N = texts.length;               // faces présentées (la dernière face de la carte sert à la sortie)
+  var OUTRO = 80 / (480 + 80);        // part du parcours consacrée à la sortie (voir CSS)
   var HOLD = 0.44;              // part de chaque intervalle où la face reste immobile
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -929,9 +979,13 @@ h1, h2, h3, p { margin: 0; }
   function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 
   function distance() { return Math.max(1, journey.offsetHeight - window.innerHeight); }
-  function rawProgress() {
-    var top = journey.getBoundingClientRect().top;
-    return clamp(-top / distance(), 0, 1) * (N - 1);
+  function facesDistance() { return distance() * (1 - OUTRO); }
+  // Position de la carte : 0 à N-1 pour les faces, puis N-1 à N pour la sortie vers le contact
+  function cardProgress() {
+    var y = -journey.getBoundingClientRect().top;
+    var fd = facesDistance();
+    if (y <= fd) return shaped(clamp(y / fd, 0, 1) * (N - 1));
+    return (N - 1) + ease(clamp((y - fd) / (distance() - fd) / 0.85, 0, 1));
   }
   // Paliers : la carte reste sur chaque face, puis tourne.
   function shaped(s) {
@@ -953,12 +1007,37 @@ h1, h2, h3, p { margin: 0; }
     });
   }
 
+  // Sortie : la carte se recentre et se réduit au-dessus du contact
+  var base = null;
+  function measure() {
+    zone.style.transform = '';
+    var z = zone.getBoundingClientRect(), st = stage.getBoundingClientRect();
+    var vh = window.innerHeight, header = document.querySelector('.site-header').offsetHeight;
+    var free = vh * 0.45 - header;                       // espace libre au-dessus du contact
+    base = {
+      dx: st.width / 2 - (z.left - st.left + z.width / 2),
+      dy: header + free / 2 - (z.top - st.top + z.height / 2),
+      s: Math.min(1, (free * 0.88) / z.height)
+    };
+  }
+  function placeZone(o) {
+    if (!base) measure();
+    if (reduce.matches) { zone.style.transform = ''; zone.style.opacity = String(1 - o); return; }
+    zone.style.opacity = '';
+    zone.style.transform = o > 0 ?
+      'translate(' + (base.dx * o).toFixed(1) + 'px,' + (base.dy * o).toFixed(1) + 'px) scale(' + (1 + (base.s - 1) * o).toFixed(4) + ')' : '';
+  }
+
   function render() {
     var f = cur;
-    var near = Math.round(f);
+    var outro = clamp(f - (N - 1), 0, 1);
+    var tf = Math.min(f, N - 1);
+    var near = Math.round(tf);
     setCurrent(near);
-    setActive(Math.abs(f - near) < 0.22 ? near : -1);
+    setActive(outro < 0.02 && Math.abs(tf - near) < 0.22 ? near : -1);
+    stage.classList.toggle('is-outro', outro >= 0.02);
     if (hint) hint.classList.toggle('is-hidden', f > 0.05);
+    placeZone(outro);
 
     if (reduce.matches) {
       faces.forEach(function (el, i) {
@@ -993,7 +1072,7 @@ h1, h2, h3, p { margin: 0; }
     if (cur !== target || Math.abs(tiltT.x - tilt.x) > 0.01 || Math.abs(tiltT.y - tilt.y) > 0.01) kick();
   }
   function kick() { if (!raf) raf = requestAnimationFrame(tick); }
-  function onScroll() { target = shaped(rawProgress()); kick(); }
+  function onScroll() { target = cardProgress(); kick(); }
 
   // Légère inclinaison au pointeur (souris uniquement)
   document.querySelector('.stage').addEventListener('pointermove', function (e) {
@@ -1010,7 +1089,7 @@ h1, h2, h3, p { margin: 0; }
 
   // Index : aller directement à une face
   function scrollToFace(i, smooth) {
-    var top = journey.getBoundingClientRect().top + window.pageYOffset + (i / (N - 1)) * distance();
+    var top = journey.getBoundingClientRect().top + window.pageYOffset + (i / (N - 1)) * facesDistance();
     window.scrollTo({ top: Math.round(top), behavior: smooth && !reduce.matches ? 'smooth' : 'auto' });
   }
   links.forEach(function (a) {
@@ -1029,14 +1108,45 @@ h1, h2, h3, p { margin: 0; }
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { sizeTexts(); onScroll(); });
+  window.addEventListener('resize', function () { sizeTexts(); base = null; onScroll(); kick(); });
   if (reduce.addEventListener) reduce.addEventListener('change', function () { card.style.transform = ''; render(); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeTexts);
   sizeTexts();
 
+  // SIREN : copie au clic
+  var status = document.getElementById('copy-status');
+  function copyText(t) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t);
+    return new Promise(function (ok, ko) {
+      var ta = document.createElement('textarea');
+      ta.value = t; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { if (document.execCommand('copy')) ok(); else ko(); } catch (e) { ko(e); }
+      document.body.removeChild(ta);
+    });
+  }
+  document.querySelectorAll('.siren').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-copy');
+      copyText(v).then(function () {
+        var k = b.querySelector('.siren-k');
+        b.classList.add('is-copied'); k.textContent = 'Copié';
+        status.textContent = 'SIREN ' + v + ' copié';
+        clearTimeout(b._t);
+        b._t = setTimeout(function () { b.classList.remove('is-copied'); k.textContent = 'SIREN'; status.textContent = ''; }, 1600);
+      }, function () {});
+    });
+  });
+
+  // La carte est décorative, sauf les SIREN : on masque le reste aux lecteurs d'écran
+  card.querySelectorAll('.slice, .face > :not(.panel), .panel > :not(.low), .low > :not(.sirens)').forEach(function (el) {
+    el.setAttribute('aria-hidden', 'true');
+  });
+  zone.querySelector('.card-shadow').setAttribute('aria-hidden', 'true');
+
   var m = /^#face-(\d)$/.exec(location.hash);
   if (m) scrollToFace(clamp(+m[1] - 1, 0, N - 1), false);
-  target = cur = shaped(rawProgress());
+  target = cur = cardProgress();
   render();
 })();
 </script>
