@@ -337,12 +337,18 @@ h1, h2, h3, p { margin: 0; }
   mask: var(--guilloche) 0 0 / calc(var(--u) * 12) auto repeat;
   opacity: .1;
 }
-.sirens { position: relative; display: flex; flex-wrap: wrap; gap: 0 calc(var(--u) * 4); margin: calc(var(--u) * -1) 0 calc(var(--u) * 1.6); }
+/* SIREN dans l'encart, à la place du nom en écriture Hunter */
+.namebox.sirens {
+  display: flex; flex-wrap: wrap; justify-content: space-around; align-items: center; gap: 0 calc(var(--u) * 3);
+  min-height: calc(var(--u) * 9.9); padding-top: calc(var(--u) * .6); padding-bottom: calc(var(--u) * .6);
+  font-size: calc(var(--u) * 3.6);
+}
+.namebox.sirens:has(.siren + .siren) { font-size: calc(var(--u) * 2.5); }
 .siren {
   appearance: none; border: 0; background: transparent; color: inherit; cursor: copy;
   display: inline-flex; align-items: baseline; gap: calc(var(--u) * 1.4);
   padding: calc(var(--u) * .8) 0;
-  font: 500 calc(var(--u) * 2.4)/1 var(--mono); letter-spacing: .1em;
+  font: 500 1em/1 var(--mono); letter-spacing: .08em;
 }
 .siren-k { font-size: .8em; letter-spacing: .2em; opacity: .6; }
 .siren-v { border-bottom: 1px dotted transparent; transition: border-color .2s; }
@@ -696,8 +702,7 @@ h1, h2, h3, p { margin: 0; }
                 <div class="bar"><span>Hunter Investisseur</span></div>
               </div>
               <div class="low">
-                <div class="sirens"><button type="button" class="siren" data-copy="910536333" aria-label="Copier le SIREN 910 536 333"><span class="siren-k">SIREN</span><span class="siren-v">910&#8239;536&#8239;333</span></button></div>
-                <div class="namebox" data-glyph="HUNTER INVESTISSEUR"></div>
+                <div class="namebox sirens"><button type="button" class="siren" data-copy="910536333" aria-label="Copier le SIREN 910 536 333"><span class="siren-k">SIREN</span><span class="siren-v">910&#8239;536&#8239;333</span></button></div>
                 <div class="glyphs" data-glyph="RAPHAEL DA SILVA SANTOS|SERVICES NUMERIQUES|ET LOISIRS|CREPY EN VALOIS"></div>
                 <div class="seal"><span>HI</span></div>
                 <span class="serial">N° 0001 · 2026</span>
@@ -718,8 +723,7 @@ h1, h2, h3, p { margin: 0; }
                 <div class="bar"><span>Bliink</span></div>
               </div>
               <div class="low">
-                <div class="sirens"><button type="button" class="siren" data-copy="987895158" aria-label="Copier le SIREN 987 895 158"><span class="siren-k">SIREN</span><span class="siren-v">987&#8239;895&#8239;158</span></button></div>
-                <div class="namebox" data-glyph="BLIINK AGENCY"></div>
+                <div class="namebox sirens"><button type="button" class="siren" data-copy="987895158" aria-label="Copier le SIREN 987 895 158"><span class="siren-k">SIREN</span><span class="siren-v">987&#8239;895&#8239;158</span></button></div>
                 <div class="glyphs" data-glyph="SITES ET APPLICATIONS|COMMUNICATION DIGITALE|PUBLICITE EN LIGNE|PETITES ENTREPRISES"></div>
                 <div class="seal"><span>B</span></div>
                 <span class="serial">N° 0002 · <span class="accent">Web</span></span>
@@ -740,8 +744,7 @@ h1, h2, h3, p { margin: 0; }
                 <div class="bar"><span>Le Studio</span></div>
               </div>
               <div class="low">
-                <div class="sirens"><button type="button" class="siren" data-copy="933432221" aria-label="Copier le SIREN 933 432 221"><span class="siren-k">SIREN</span><span class="siren-v">933&#8239;432&#8239;221</span></button></div>
-                <div class="namebox" data-glyph="LE STUDIO"></div>
+                <div class="namebox sirens"><button type="button" class="siren" data-copy="933432221" aria-label="Copier le SIREN 933 432 221"><span class="siren-k">SIREN</span><span class="siren-v">933&#8239;432&#8239;221</span></button></div>
                 <div class="glyphs" data-glyph="QUIZ ROOM|KARAOKE|PAINT WALL|PARTICIPATION CINQUANTE"></div>
                 <div class="seal"><span>LS</span></div>
                 <span class="serial">N° 0003 · Loisirs</span>
@@ -765,8 +768,7 @@ h1, h2, h3, p { margin: 0; }
                 <div class="bar"><span>Patrimoine</span></div>
               </div>
               <div class="low">
-                <div class="sirens"><button type="button" class="siren" data-copy="910445857" aria-label="Copier le SIREN 910 445 857"><span class="siren-k">SIREN</span><span class="siren-v">910&#8239;445&#8239;857</span></button><button type="button" class="siren" data-copy="918818238" aria-label="Copier le SIREN 918 818 238"><span class="siren-k">SIREN</span><span class="siren-v">918&#8239;818&#8239;238</span></button></div>
-                <div class="namebox" data-glyph="PATRIMOINE IMMOBILIER"></div>
+                <div class="namebox sirens"><button type="button" class="siren" data-copy="910445857" aria-label="Copier le SIREN 910 445 857"><span class="siren-k">SIREN</span><span class="siren-v">910&#8239;445&#8239;857</span></button><button type="button" class="siren" data-copy="918818238" aria-label="Copier le SIREN 918 818 238"><span class="siren-k">SIREN</span><span class="siren-v">918&#8239;818&#8239;238</span></button></div>
                 <div class="glyphs" data-glyph="PARTICIPATIONS|SOCIETES IMMOBILIERES|HUNTER INVESTISSEUR|PATRIMOINE"></div>
                 <div class="seal"><span>HI</span></div>
                 <span class="serial">N° 0004 · Immobilier</span>
@@ -806,8 +808,7 @@ h1, h2, h3, p { margin: 0; }
                 <div class="bar"><span>Hunter Investisseur</span></div>
               </div>
               <div class="low">
-                <div class="sirens"><button type="button" class="siren" data-copy="910536333" aria-label="Copier le SIREN 910 536 333"><span class="siren-k">SIREN</span><span class="siren-v">910&#8239;536&#8239;333</span></button></div>
-                <div class="namebox" data-glyph="HUNTER INVESTISSEUR"></div>
+                <div class="namebox sirens"><button type="button" class="siren" data-copy="910536333" aria-label="Copier le SIREN 910 536 333"><span class="siren-k">SIREN</span><span class="siren-v">910&#8239;536&#8239;333</span></button></div>
                 <div class="glyphs" data-glyph="RAPHAEL DA SILVA SANTOS|SERVICES NUMERIQUES|ET LOISIRS|CREPY EN VALOIS"></div>
                 <div class="seal"><span>HI</span></div>
                 <span class="serial">N° 0001 · 2026</span>
